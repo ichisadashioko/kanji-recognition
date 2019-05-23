@@ -10,7 +10,7 @@ This project demonstrates building a CNN to recognize Japanese kanji characters.
 
 - [Tensorflow - Python](README.ipynb)
 
-- [Tensorflow.js](tree/gh-pages) to deploy the model on the web.
+- [Tensorflow.js](https://github.com/kuroemon2509/kanji-recognition/tree/gh-pages) to deploy the model on the web.
 
 - [Android] - Working on
 
