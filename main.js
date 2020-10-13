@@ -43,15 +43,15 @@ function predict() {
 }
 
 /**
- * 
- * @param {MouseEvent} mouse 
+ *
+ * @param {MouseEvent} mouse
  */
 function mouse_down(mouse) {
     pen.down = true
 }
 /**
- * 
- * @param {MouseEvent} mouse 
+ *
+ * @param {MouseEvent} mouse
  */
 function mouse_move(mouse) {
     if (pen.down) {
@@ -89,8 +89,8 @@ function mouse_move(mouse) {
 }
 
 /**
- * 
- * @param {MouseEvent} mouse 
+ *
+ * @param {MouseEvent} mouse
  */
 function mouse_up(mouse) {
     pen.down = false

@@ -85,7 +85,7 @@ function clearCanvas() {
 
 /**
  * Initialize pen
- * @param {Touch} touch 
+ * @param {Touch} touch
  */
 function touchstart(touch) {
     if (!pen.down) {
@@ -96,8 +96,8 @@ function touchstart(touch) {
     }
 }
 /**
- * 
- * @param {Touch} touch 
+ *
+ * @param {Touch} touch
  */
 function touchmove(touch) {
     console.log(touch)
@@ -137,8 +137,8 @@ function touchmove(touch) {
 }
 
 /**
- * 
- * @param {Touch} touch 
+ *
+ * @param {Touch} touch
  */
 function touchend(touch) {
     if (pen.down) {
