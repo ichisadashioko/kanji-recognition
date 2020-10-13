@@ -33,7 +33,7 @@ body {
     border-radius: 0%;
 }
 
-#result-container {
+#results-container {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -42,7 +42,7 @@ body {
     border-radius: 5px;
 }
 
-#result-container div {
+#results-container div {
     margin: 2px;
     color: white;
 }

@@ -1,9 +1,13 @@
+import * as constants from './constants.js'
+
 var model = null
 async function loadMyModel() {
     model = await tf.loadLayersModel('kanji-model-v3-tfjs/model.json')
 }
 
 loadMyModel()
+
+var results_container = document.getElementById('results-container')
 
 function predict() {
     var canvas = document.getElementById('canvas')
@@ -31,12 +35,11 @@ function predict() {
             template = `
             <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
                 <div class="toast-body">
-                    result_message_here
+                    ${toast_message}
                 </div>
-            </div>`.replace('result_message_here', toast_message)
+            </div>`
 
-            // template = $('#result-template').html().replace('result_message_here', toast_message)
-            $('#result-container').html(template)
+            results_container.innerHTML = template
         })
     }
 
@@ -50,20 +53,19 @@ function mouse_down(mouse) {
     pen.down = true
 }
 /**
- *
- * @param {MouseEvent} mouse
+ * @param {MouseEvent} evt
  */
 function mouse_move(mouse) {
     if (pen.down) {
         if (pen.x == null || pen.y == null) {
-            pen.x = (mouse.clientX - canvasOffset.x) / scale
-            pen.y = (mouse.clientY - canvasOffset.y) / scale
+            pen.x = (evt.clientX - canvasOffset.x) / scale
+            pen.y = (evt.clientY - canvasOffset.y) / scale
         } else {
             var x = pen.x
             var y = pen.y
 
-            var dX = (mouse.clientX - canvasOffset.x) / scale - x;
-            var dY = (mouse.clientY - canvasOffset.y) / scale - y;
+            var dX = (evt.clientX - canvasOffset.x) / scale - x
+            var dY = (evt.clientY - canvasOffset.y) / scale - y
 
             var distance = Math.sqrt(dX ** 2 + dY ** 2)
 
@@ -72,7 +74,7 @@ function mouse_move(mouse) {
             var deltaY = dY / step
 
             for (let i = 0; i < step; i++) {
-                ctx.fillStyle = brushStyle;
+                ctx.fillStyle = brushStyle
                 ctx.beginPath()
                 ctx.arc(x, y, pen.radius, 0, Math.PI * 2, false)
                 ctx.fill()
@@ -80,8 +82,8 @@ function mouse_move(mouse) {
                 x += deltaX
                 y += deltaY
             }
-            pen.x = (mouse.clientX - canvasOffset.x) / scale
-            pen.y = (mouse.clientY - canvasOffset.y) / scale
+            pen.x = (evt.clientX - canvasOffset.x) / scale
+            pen.y = (evt.clientY - canvasOffset.y) / scale
 
             isBlank = false
         }
@@ -89,57 +91,95 @@ function mouse_move(mouse) {
 }
 
 /**
- *
- * @param {MouseEvent} mouse
+ * @param {MouseEvent} evt
  */
-function mouse_up(mouse) {
+function mouse_up(evt) {
     pen.down = false
     pen.x = null
     pen.y = null
     predict()
 }
 
-window.onload = function () {
 
-    canvas = document.getElementById('canvas');
-    ctx = canvas.getContext('2d');
+var canvas = document.getElementById('canvas')
+var ctx = canvas.getContext('2d')
+var ui_container = document.getElementById('ui-container')
 
-    doResize();
-    clearCanvas();
+function updateLayout() {
+    var new_scale = Math.min(
+        window.innerWidth / constants.PAD_WIDTH,
+        window.innerHeight / constants.PAD_HEIGHT
+    )
 
-    canvas.addEventListener('touchstart', (evt) => {
-        evt.preventDefault()
-        for (var i = 0; i < evt.changedTouches.length; i++) {
-            touchstart(evt.changedTouches[i])
-        }
-    }, false)
+    scale = new_scale
 
-    canvas.addEventListener('touchmove', (evt) => {
-        evt.preventDefault()
-        for (var i = 0; i < evt.changedTouches.length; i++) {
-            touchmove(evt.changedTouches[i])
-        }
-    }, false)
+    c.css('transform', ('scale(' + new_scale + ')'))
+    c.css('left', '0')
+    canvasOffset.x = 0;
 
-    canvas.addEventListener('touchend', (evt) => {
-        evt.preventDefault()
-        for (var i = 0; i < evt.changedTouches.length; i++) {
-            touchend(evt.changedTouches[i])
-        }
-    }, false)
+    var ui_width = window.innerWidth - new_scale * constants.PAD_WIDTH;
 
-    canvas.addEventListener('mousedown', (evt) => mouse_down(evt))
-    canvas.addEventListener('mousemove', (evt) => mouse_move(evt))
-    canvas.addEventListener('mouseup', (evt) => mouse_up(evt))
-    canvas.addEventListener('mouseleave', (evt) => mouse_up(evt))
+    if (ui_width == 0) {
+        ui_width = window.innerWidth;
+    }
 
-    window.addEventListener('keyup', (evt) => {
-        if (evt.key == 'c') {
-            clearCanvas()
-        }
-    })
+    var ui_height = window.innerHeight - new_scale * constants.PAD_HEIGHT;
 
-    window.addEventListener('resize', function (e) {
-        doResize();
-    })
+    if (ui_height == 0) {
+        ui_height = window.innerHeight;
+        canvasOffset.x = ui_width;
+        c.css('left', ui_width)
+        ui_container.css('left', '0')
+        ui_container.css('right', '')
+    }
+
+    ui_container.css('width', ('' + ui_width + 'px'))
+    ui_container.css('height', ('' + ui_height + 'px'))
 }
+
+updateLayout()
+clearCanvas()
+
+canvas.addEventListener('touchstart', function (evt) {
+    evt.preventDefault()
+    for (var i = 0; i < evt.changedTouches.length; i++) {
+        touchstart(evt.changedTouches[i])
+    }
+}, false)
+
+canvas.addEventListener('touchmove', function (evt) {
+    evt.preventDefault()
+    for (var i = 0; i < evt.changedTouches.length; i++) {
+        touchmove(evt.changedTouches[i])
+    }
+}, false)
+
+canvas.addEventListener('touchend', function (evt) {
+    evt.preventDefault()
+    for (var i = 0; i < evt.changedTouches.length; i++) {
+        touchend(evt.changedTouches[i])
+    }
+}, false)
+
+canvas.addEventListener('mousedown', function (evt) { mouse_down(evt) })
+canvas.addEventListener('mousemove', function (evt) { mouse_move(evt) })
+canvas.addEventListener('mouseup', function (evt) { mouse_up(evt) })
+canvas.addEventListener('mouseleave', function (evt) { mouse_up(evt) })
+
+window.addEventListener('keyup', function (evt) {
+    if (evt.key == 'c') {
+        clearCanvas()
+    }
+})
+
+window.addEventListener('resize', function (evt) {
+    updateLayout()
+})
+
+document.getElementById('clear').addEventListener('click', function () {
+    clearCanvas()
+})
+
+document.getElementById('predict').addEventListener('click', function () {
+    predict()
+})
