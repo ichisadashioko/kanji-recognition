@@ -7,19 +7,6 @@
 
     <link rel='stylesheet' type='text/css' href='style.css'>
 
-    <!-- Improt TensorFlow.js -->
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
-    <!-- Import tfjs-vis -->
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis@1.0.2/dist/tfjs-vis.umd.min.js"></script>
-    <!-- jQuery -->
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js'></script>
-    <!-- Drawing utility -->
-    <script src='drawing.js'></script>
-    <!-- Import the label file -->
-    <script src='label.js'></script>
-    <!-- Import the main script file -->
-    <script src='main.js'></script>
-
     <script id="result-template" type="text/x-custom-template">
         <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header">
@@ -46,6 +33,17 @@
     </div>
     <div id="result-container">
     </div>
+
+    <!-- place all the scripts right before the body closing tag allows them to execute after the document has been loaded -->
+    <!-- and we don't have to place our DOM selecting code inside window.onload -->
+    <!-- Improt TensorFlow.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
+    <!-- Import tfjs-vis -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis@1.0.2/dist/tfjs-vis.umd.min.js"></script>
+    <!-- Drawing utility -->
+    <script src='drawing.js'></script>
+    <!-- Import the main script file -->
+    <script src='main.js'></script>
 </body>
 
 </html>
