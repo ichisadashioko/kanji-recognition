@@ -329,7 +329,7 @@ def kanji_model_v4():
     `input_shape` = (?, 64, 64, 1)
 
     `output_shape` = (?, 2199)
-    
+
     No `Dropout`
     """
     model = tf.keras.Sequential([

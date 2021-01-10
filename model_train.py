@@ -18,7 +18,7 @@ import kanji_label_dict as kld
 
 class MyClassback(tf.keras.callbacks.Callback):
     def __init__(self, prefix: str, save_dir: str):
-        # append `prefix` to model weights to 
+        # append `prefix` to model weights to
         self.prefix = prefix
         self.save_dir = save_dir
         self.last_acc = None
