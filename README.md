@@ -22,6 +22,10 @@ __Training__
 
 With the data ready, I was able to train reasonable good models (in a few weeks). I spent the next few months to build some applications that utilize that model - a web app demo, an android app, and a desktop app for labeling my hard-work writing data.
 
+__New data__
+
+One days, I stumbled on [ETL Character Database](http://etlcdb.db.aist.go.jp) - an image dataset which is perfect for my need. It contains more data than I can write in the next 5 years. In addition, all of them has been labeled. I took me a few weeks to process one part of the dataset. It was the first time I had to research about text encoding (ASCII, UTF-8, SHIFT-JIS, UTF-16, etc.). With the new found dataset, the model performed significant better than being trained with the fonts dataset.
+
 ## Implementations
 
 - [TensorFlow - Python](train_classifier_with_font_only.ipynb) - Train model with Python and TensorFlow.
