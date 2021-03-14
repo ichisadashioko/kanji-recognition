@@ -6,7 +6,7 @@ import math
 
 import tensorflow as tf
 
-import utilities
+import utils
 
 
 class MyClassback(tf.keras.callbacks.Callback):

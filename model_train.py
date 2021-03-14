@@ -10,8 +10,9 @@ import pandas
 import tensorflow as tf
 # tf.enable_eager_execution()
 
-# this is my custom library file that will host all the methods and model architectures
-import utilities
+# this is my custom library file that contains some useful methods
+# and some methods for creating different model architectures
+import utils
 
 import kanji_label_dict as kld
 
@@ -45,12 +46,12 @@ class MyClassback(tf.keras.callbacks.Callback):
     def save_model_weights(self, epoch, acc):
         if not os.path.exists(self.save_dir):
             os.makedirs(self.save_dir)
-        model_weights_filename = f'{self.save_dir}/{self.prefix}_weights_epoch_{str(epoch).zfill(2)}_acc_{acc:.2f}_{utilities.time_now()}.h5'
+        model_weights_filename = f'{self.save_dir}/{self.prefix}_weights_epoch_{str(epoch).zfill(2)}_acc_{acc:.2f}_{utils.time_now()}.h5'
         self.model.save_weights(model_weights_filename)
 
 
 if __name__ == "__main__":
-    model = utilities.kanji_model_v3()
+    model = utils.kanji_model_v3()
     model.compile(
         optimizer='adam',
         loss='sparse_categorical_crossentropy',
@@ -68,7 +69,7 @@ if __name__ == "__main__":
     steps_per_epoch = math.ceil(buffer_size / batch_size)
 
     tfrecord_filename = 'kanji_dataset.tfrecord'
-    ds = utilities.load_tfrecord(tfrecord_filename)
+    ds = utils.load_tfrecord(tfrecord_filename)
     ds = ds.cache()
     ds = ds.apply(tf.data.experimental.shuffle_and_repeat(
         buffer_size=buffer_size
@@ -87,6 +88,6 @@ if __name__ == "__main__":
         callbacks=[callback],
     )
 
-    model_filename = f'{save_dir}/{prefix}_model_{utilities.time_now()}.h5'
+    model_filename = f'{save_dir}/{prefix}_model_{utils.time_now()}.h5'
 
     model.save(model_filename)
